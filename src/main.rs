@@ -1,20 +1,20 @@
 use reqwest;
 use reqwest::header::{HeaderMap, CONTENT_TYPE, AUTHORIZATION,HeaderValue};
 
-const ANZO_URL:String = "172.17.0.2".to_string();
-const ANZO_USER:String = "admin".to_string();
-const ANZO_PASS:String = "Passw0rd1".to_string();
+const ANZO_URL:&str = "172.17.0.2";
+const ANZO_USER:&str = "admin";
+const ANZO_PASS:&str = "Passw0rd1";
 
 fn send_query_to_db(query:String) {
     
 
     let mut headers = HeaderMap::new();
-    headers.insert(AUTHORIZATION, HeaderValue::from_str(["Basic ",ANZO_USER,":",ANZO_PASS].concat().to_string()));
+    headers.insert(AUTHORIZATION, HeaderValue::from_str(&["Basic ",&ANZO_USER,":",&ANZO_PASS].concat().to_string()).unwrap());
     headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/sparql-query; charset=utf-8"));
 
     let client = reqwest::blocking::Client::new();
     let res = client    
-    .post(&ANZO_URL)
+    .post(ANZO_URL)
     .headers(headers)
     .body(query)
     .send();

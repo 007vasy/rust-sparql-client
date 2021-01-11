@@ -1,9 +1,15 @@
 use reqwest;
 use reqwest::header::{HeaderMap, CONTENT_TYPE, AUTHORIZATION,HeaderValue};
 
+use xmlJSON::XmlDocument;
+use std::str::FromStr;
+ 
+
 const ANZO_URL:&str = "http://172.17.0.2:7070/sparql";
 const ANZO_USER:&str = "admin";
 const ANZO_PASS:&str = "Passw0rd1";
+
+
 
 fn send_query_to_db(query:String) {
     
@@ -20,7 +26,8 @@ fn send_query_to_db(query:String) {
     .body(query)
     .send();
     println!("{:?}", res);
-    println!("{:?}", res.unwrap().text().unwrap());
+    let data = XmlDocument::from_str(&res.unwrap().text().unwrap());  
+    println!("{:?}", data);
     ()
 }
 
